@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { ToastContainer, useToast } from './Toast';
 import ProfileModal from './ProfileModal';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import API from '../api/axios';
 import AIAssistant from './AIAssistant';
 import InvoiceUpload from './InvoiceUpload';
@@ -1525,7 +1525,7 @@ export default function Dashboard({ user, onLogout }) {
       assets: toArr(acc.assets), liabilities: toArr(acc.liabilities), equity: toArr(acc.equity),
       revenue: toArr(acc.revenue), cogs: toArr(acc.cogs), expenses: toArr(acc.expenses),
     };
-  }, [txs, lang]);
+  }, [postedTxs, lang]);
 
   const categoryBreakdown = {
     revenue: groupBreakdown.revenue.slice(0, 8),
