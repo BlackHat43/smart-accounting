@@ -27,4 +27,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Database
-backend/accounting.db
+backend/accounting.dbbackend/uploads/ 
