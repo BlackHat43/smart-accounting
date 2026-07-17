@@ -5,17 +5,24 @@ from sqlalchemy.orm import sessionmaker
 
 # Database config
 
-if os.environ.get("VERCEL"):
-    DB_PATH = "/tmp/accounting.db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+ 
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URL = DATABASE_URL
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 else:
-    DB_PATH = "./accounting.db"
-
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+    if os.environ.get("VERCEL"):
+        DB_PATH = "/tmp/accounting.db"
+    else:
+        DB_PATH = "./accounting.db"
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False}
+    )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

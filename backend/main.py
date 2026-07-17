@@ -14,7 +14,13 @@ def run_light_migrations():
     يضيف الأعمدة الجديدة إلى جدول transactions الموجود مسبقًا دون حذف أي بيانات.
     المشروع لا يستخدم Alembic، لذلك هذه خطوة ترحيل بسيطة وآمنة تُنفَّذ عند كل إقلاع
     وتتجاهل أي عمود موجود بالفعل.
+
+    هذه الترحيلات مكتوبة بصياغة SQLite تحديدًا (أنواع وشروط تختلف عن Postgres)،
+    ولا حاجة لها أصلاً على Postgres لأن create_all() ينشئ الجدول بكل أعمدته
+    الصحيحة من البداية على أي قاعدة بيانات فارغة جديدة (مثل Neon الجديدة).
     """
+    if engine.dialect.name != "sqlite":
+        return
     inspector = inspect(engine)
     if "transactions" not in inspector.get_table_names():
         return
