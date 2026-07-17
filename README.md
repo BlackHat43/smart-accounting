@@ -5,6 +5,14 @@
 </p>
 
 <p align="center">
+  <a href="https://smart-accounting-pi.vercel.app" target="_blank">
+    <strong>Web Site</strong>
+  </a>
+  <br>
+  <strong>Modern Accounting Platform Powered by Artificial Intelligence</strong>
+</p>
+
+<p align="center">
   <a href="https://youtu.be/qtoeY3qycSE" target="_blank">
     <strong>🎥 Watch Demo Video</strong>
   </a>
