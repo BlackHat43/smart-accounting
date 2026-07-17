@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "backend/main.py", "use": "@vercel/python" },
+    { "src": "frontend/package.json", "use": "@vercel/static-build", "config": { "distDir": "build" } }
+  ],
+  "routes": [
+    { "src": "/auth/(.*)", "dest": "backend/main.py" },
+    { "src": "/transactions(.*)", "dest": "backend/main.py" },
+    { "src": "/api/(.*)", "dest": "backend/main.py" },
+    { "src": "/uploads/(.*)", "dest": "backend/main.py" },
+    { "src": "/health", "dest": "backend/main.py" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
