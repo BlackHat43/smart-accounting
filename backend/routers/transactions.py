@@ -775,8 +775,14 @@ def quick_add(data: QuickAddRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=503, detail=result["error"])
     return result
 
-UPLOADS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
-os.makedirs(UPLOADS_DIR, exist_ok=True)
+if os.environ.get("VERCEL"):
+    UPLOADS_DIR = "/tmp/uploads"
+else:
+    UPLOADS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
+try:
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+except Exception as e:
+    print(f"⚠️ تعذّر تجهيز مجلد المرفقات: {e}")
 ALLOWED_ATTACHMENT_TYPES = {
     "image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "application/pdf": ".pdf",
 }

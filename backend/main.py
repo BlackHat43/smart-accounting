@@ -63,12 +63,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# مجلد تخزين الملفات المرفقة (فواتير، مستندات) — تخزين محلي مؤقت إلى حين ربط
-# النظام بتخزين حقيقي (قاعدة بيانات ملفات / S3 أو ما شابه). الملفات تُخدَّم
-# مباشرة عبر /uploads/<اسم الملف>.
-UPLOADS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
-os.makedirs(UPLOADS_DIR, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+
+if os.environ.get("VERCEL"):
+    UPLOADS_DIR = "/tmp/uploads"
+else:
+    UPLOADS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
+try:
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+except Exception as e:
+    print(f"⚠️ تعذّر تجهيز مجلد المرفقات: {e}")
 
 app.include_router(auth.router)
 app.include_router(transactions.router)
